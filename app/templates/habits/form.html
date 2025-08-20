@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if habit.id else 'New' }} Habit · HabitFlow{% endblock %}
+{% block content %}
+<div class="card">
+  <h2 class="card-title">{{ 'Edit' if habit.id else 'Create' }} Habit</h2>
+  <form method="post" class="grid" style="gap:16px">
+    <div>
+      <div class="label">Name</div>
+      <input class="input" name="name" value="{{ habit.name or '' }}" required>
+    </div>
+
+    <div class="row">
+      <div>
+        <div class="label">Type</div>
+        <select class="select" name="kind">
+          {% for k in ['count','duration','distance','boolean'] %}
+            <option value="{{k}}" {{ 'selected' if habit.kind==k }}>{{k}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <div class="label">Unit</div>
+        <input class="input" name="unit" value="{{ habit.unit or '' }}" placeholder="reps / min / km / yes/no">
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <div class="label">Daily target (optional)</div>
+        <input class="input" name="daily_target" type="number" step="0.01" value="{{ habit.daily_target or '' }}">
+      </div>
+      <div>
+        <div class="label">Color</div>
+        <input class="input" name="color" type="color" value="{{ habit.color or '#344CB7' }}">
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary">Save habit</button>
+      <a class="btn btn-ghost" href="{{ url_for('habits.index') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Log Entry · HabitFlow{% endblock %}
+{% block content %}
+<div class="card">
+  <h2 class="card-title">{{ 'Edit' if log else 'New' }} Log</h2>
+  <form method="post" class="grid" style="gap:16px">
+    <div>
+      <div class="label">Habit</div>
+      <select class="select" name="habit_id" required>
+        <option value="">— choose —</option>
+        {% for h in habits %}
+          <option value="{{h.id}}" {{ 'selected' if log and log.habit_id==h.id }}>{{h.name}}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="row">
+      <div>
+        <div class="label">Date</div>
+        <input class="input" type="date" name="log_date" value="{{ (log.log_date if log else None) or '' }}">
+      </div>
+      <div>
+        <div class="label">Value</div>
+        <input class="input" type="number" step="0.01" name="value" value="{{ log.value if log else '' }}">
+      </div>
+    </div>
+
+    <div>
+      <div class="label">Note</div>
+      <textarea class="textarea" name="note" rows="3">{{ log.note if log else '' }}</textarea>
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary">Save log</button>
+      <a class="btn btn-ghost" href="{{ url_for('main.dashboard') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

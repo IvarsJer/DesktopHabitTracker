@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Habits · HabitFlow{% endblock %}
+{% block content %}
+<div class="card" style="margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
+  <h2 class="card-title" style="margin:0">Your Habits</h2>
+  <a class="btn btn-accent" href="{{ url_for('habits.upsert') }}">+ New Habit</a>
+</div>
+
+<table class="table">
+  <thead>
+    <tr><th>Name</th><th>Type</th><th>Target</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for h in habits %}
+      <tr>
+        <td><div class="metric"><span class="dot" style="background:{{h.color}}"></span>{{ h.name }}</div></td>
+        <td>{{ h.kind }} ({{ h.unit }})</td>
+        <td>{% if h.daily_target %}{{ h.daily_target }} {{ h.unit }}/day{% else %}—{% endif %}</td>
+        <td style="text-align:right">
+          <a class="btn btn-ghost" href="{{ url_for('habits.upsert', habit_id=h.id) }}">Edit</a>
+          <form method="post" action="{{ url_for('habits.delete', habit_id=h.id) }}" style="display:inline">
+            <button class="btn btn-danger" onclick="return confirm('Delete {{h.name}}?')">Delete</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

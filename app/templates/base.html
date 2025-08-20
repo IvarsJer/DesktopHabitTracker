@@ -1,0 +1,41 @@
+<!-- app/templates/base.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{% block title %}HabitFlow{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script defer src="{{ url_for('static', filename='js/charts.js') }}"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="container" style="padding:0">
+      <div class="brand">
+        <span class="brand-dot"></span> HabitFlow
+      </div>
+      <nav class="nav">
+        <a href="{{ url_for('main.dashboard') }}" class="{{ 'active' if request.endpoint=='main.dashboard' else '' }}">Dashboard</a>
+        <a href="{{ url_for('habits.index') }}" class="{{ 'active' if request.blueprint=='habits' else '' }}">Habits</a>
+        <a href="{{ url_for('logs.upsert') }}" class="{{ 'active' if request.blueprint=='logs' else '' }}">Add Log</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for cat, msg in messages %}
+          <div class="flash flash-{{cat}}">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <div class="footer">Made with 💙 <span style="color:var(--yellow)">●</span></div>
+</body>
+</html>

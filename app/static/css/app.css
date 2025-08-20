@@ -1,0 +1,113 @@
+/* app/static/css/app.css */
+:root{
+  --navy:#000957;   /* primary bg */
+  --indigo:#344CB7; /* primary brand */
+  --blue:#577BC1;   /* secondary brand */
+  --yellow:#FFEB00; /* accent/cta */
+  --ink:#0f172a;    /* text dark */
+  --slate:#475569;  /* text muted */
+  --bg:#f6f7fb;     /* app background */
+  --card:#ffffff;   /* card background */
+  --border:#e5e7eb; /* subtle borders */
+  --success:#16a34a;
+  --danger:#dc2626;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font: 16px/1.5 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--ink);
+  background:var(--bg);
+}
+
+/* Layout */
+.container{max-width:1100px;margin-inline:auto;padding:24px}
+.header{
+  position:sticky;top:0;z-index:20;
+  background:var(--navy); color:#fff; padding:14px 18px;
+  box-shadow:0 2px 10px rgba(0,0,0,.18);
+}
+.brand{display:flex;gap:12px;align-items:center;font-weight:700;letter-spacing:.2px}
+.brand-dot{width:10px;height:10px;border-radius:50%;background:var(--yellow)}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.nav a{
+  color:#e5eaff;text-decoration:none;padding:8px 12px;border-radius:10px;
+}
+.nav a.active, .nav a:hover{background:#0b146a}
+
+/* CHARTS: lock height and avoid resize loops */
+.chart-compact{
+  height:120px;      /* pick the chart height */
+  width:100%;
+  position:relative; /* required by Chart.js when maintainAspectRatio=false */
+}
+canvas.spark{
+  display:block;
+  width:100% !important;
+  height:100% !important;   /* follow wrapper height */
+}
+
+/* Cards / panels */
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:18px;
+  box-shadow:0 8px 24px rgba(0,0,0,.04);
+}
+.card-title{font-weight:700;margin:0 0 8px}
+.grid{display:grid;gap:16px}
+.grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:900px){.grid.cols-3,.grid.cols-2{grid-template-columns:1fr}}
+
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 14px;border-radius:12px;border:1px solid transparent;
+  font-weight:600;text-decoration:none;cursor:pointer;transition:.15s ease;
+}
+.btn-primary{background:var(--indigo);color:#fff}
+.btn-primary:hover{filter:brightness(1.05)}
+.btn-ghost{background:#eef2ff;color:var(--indigo)}
+.btn-ghost:hover{background:#e0e7ff}
+.btn-accent{background:var(--yellow);color:#1a1a1a}
+.btn-danger{background:#fee2e2;color:#7f1d1d;border-color:#fecaca}
+
+/* Forms */
+.input, .select, .textarea{
+  width:100%;padding:10px 12px;border:1px solid var(--border);
+  border-radius:12px;background:#fff;outline:none;
+}
+.input:focus, .select:focus, .textarea:focus{
+  border-color:var(--blue); box-shadow:0 0 0 4px rgba(52,76,183,.12);
+}
+.label{font-weight:600;color:var(--slate);margin:.25rem 0 .35rem}
+.row{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+@media (max-width:700px){.row{grid-template-columns:1fr}}
+
+/* Chips / metrics */
+.metric{display:flex;align-items:center;gap:10px}
+.badge{padding:4px 10px;border-radius:999px;font-weight:700;font-size:.8rem}
+.badge-blue{background:#eaf2ff;color:#1e3a8a}
+.badge-yellow{background:#fff6b4;color:#7a5d00}
+
+/* Tables (habits list) */
+.table{width:100%;border-collapse:separate;border-spacing:0 10px}
+.table th{font-size:.9rem;color:var(--slate);text-align:left;padding:6px 10px}
+.table td{background:#fff;border:1px solid var(--border);padding:12px 14px}
+.table td:first-child{border-top-left-radius:12px;border-bottom-left-radius:12px}
+.table td:last-child{border-top-right-radius:12px;border-bottom-right-radius:12px}
+
+/* Alerts */
+.flash{padding:12px 14px;border-radius:12px;margin:12px 0}
+.flash-success{background:#ecfdf5;color:#065f46}
+.flash-danger{background:#fef2f2;color:#7f1d1d}
+
+/* Tiny color dot for habit */
+.dot{width:10px;height:10px;border-radius:50%}
+
+/* Footer */
+.footer{color:#9aa3b2;font-size:.9rem;padding:18px;text-align:center}

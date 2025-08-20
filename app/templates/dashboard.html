@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · HabitFlow{% endblock %}
+{% block content %}
+<div class="grid cols-3">
+  {% for s in summaries %}
+    <div class="card">
+      <div class="metric" style="justify-content:space-between">
+        <div class="metric">
+          <span class="dot" style="background: {{ s.habit.color }}"></span>
+          <h3 class="card-title">{{ s.habit.name }}</h3>
+        </div>
+        {% if s.habit.daily_target %}
+          <span class="badge badge-blue">{{ s.habit.daily_target }} {{ s.habit.unit }}/day</span>
+        {% endif %}
+      </div>
+
+      <div class="grid cols-2" style="margin:10px 0 6px">
+        <div><div class="label">Streak</div><div class="card-title">{{ s.streak }} days</div></div>
+        <div><div class="label">Last 90 days</div><div class="card-title">{{ '%.0f'|format(s.total) }} {{ s.habit.unit }}</div></div>
+      </div>
+
+      <!-- fixed-height wrapper prevents infinite growth -->
+      <div class="chart-compact">
+        <canvas
+          class="spark"
+          data-habit="{{ s.habit.id }}"
+          data-color="{{ s.habit.color }}"></canvas>
+      </div>
+
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <a class="btn btn-ghost" href="{{ url_for('logs.upsert') }}">Quick log</a>
+        <a class="btn btn-primary" href="{{ url_for('habits.upsert', habit_id=s.habit.id) }}">Edit</a>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}
