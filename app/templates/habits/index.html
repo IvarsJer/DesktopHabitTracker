@@ -1,29 +1,89 @@
 {% extends "base.html" %}
 {% block title %}Habits · HabitFlow{% endblock %}
 {% block content %}
-<div class="card" style="margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
+
+<div class="card" style="margin-bottom:16px; display:flex; justify-content:space-between; align-items:center;">
   <h2 class="card-title" style="margin:0">Your Habits</h2>
   <a class="btn btn-accent" href="{{ url_for('habits.upsert') }}">+ New Habit</a>
 </div>
 
 <table class="table">
   <thead>
-    <tr><th>Name</th><th>Type</th><th>Target</th><th></th></tr>
+    <tr>
+      <th>Habit</th>
+      <th>Today</th>
+      <th>Current Week</th>
+      <th>Streak</th>
+      <th style="width:160px"></th>
+    </tr>
   </thead>
   <tbody>
-    {% for h in habits %}
-      <tr>
-        <td><div class="metric"><span class="dot" style="background:{{h.color}}"></span>{{ h.name }}</div></td>
-        <td>{{ h.kind }} ({{ h.unit }})</td>
-        <td>{% if h.daily_target %}{{ h.daily_target }} {{ h.unit }}/day{% else %}—{% endif %}</td>
-        <td style="text-align:right">
-          <a class="btn btn-ghost" href="{{ url_for('habits.upsert', habit_id=h.id) }}">Edit</a>
-          <form method="post" action="{{ url_for('habits.delete', habit_id=h.id) }}" style="display:inline">
-            <button class="btn btn-danger" onclick="return confirm('Delete {{h.name}}?')">Delete</button>
-          </form>
-        </td>
-      </tr>
-    {% endfor %}
+  {% for row in rows %}
+    {% set h = row.habit %}
+    <tr>
+      <td>
+        <div class="metric">
+          <span class="dot" style="background: {{ h.color }}"></span>
+          <div>
+            <div style="font-weight:700">{{ h.name }}</div>
+            <div class="label">{{ h.kind }} ({{ h.unit }})</div>
+          </div>
+        </div>
+      </td>
+
+      <td>
+        {% if h.kind == 'boolean' %}
+          <label class="metric">
+            <input type="checkbox"
+                   class="checkbox js-toggle-today"
+                   data-habit-id="{{ h.id }}"
+                   {{ 'checked' if row.today_total > 0 else '' }}>
+            <span>Done</span>
+          </label>
+        {% else %}
+          <div class="metric">
+            <input type="number"
+                   class="input js-quick-amount"
+                   style="width:90px"
+                   step="{{ '1' if h.kind in ['count','duration'] else '0.1' }}"
+                   min="0"
+                   placeholder="+">
+            <button class="btn btn-primary js-quick-add"
+                    data-habit-id="{{ h.id }}">Add</button>
+          </div>
+          {% if row.today_total %}
+            <div class="label">Today: {{ '%.2f'|format(row.today_total) }} {{ h.unit }}</div>
+          {% endif %}
+        {% endif %}
+      </td>
+
+      <td>
+        <div class="week-block">
+          <div class="week-labels">
+            {% for l in week_labels %}
+              <span>{{ l }}</span>
+            {% endfor %}
+          </div>
+          <div class="week-dots">
+            {% for d in row.week %}
+              <span class="wk-dot {{ 'on' if d.value > 0 else '' }}" title="{{ d.date.isoformat() }}"></span>
+            {% endfor %}
+          </div>
+        </div>
+      </td>
+
+      <td><span class="badge badge-blue">{{ row.streak }} days</span></td>
+
+      <td>
+        <a class="btn btn-ghost" href="{{ url_for('habits.upsert', habit_id=h.id) }}">Edit</a>
+        <form method="post" action="{{ url_for('habits.delete', habit_id=h.id) }}" style="display:inline"
+              onsubmit="return confirm('Delete this habit?');">
+          <button class="btn btn-danger" type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
   </tbody>
 </table>
+
 {% endblock %}

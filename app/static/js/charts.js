@@ -31,7 +31,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }]
       },
       options: {
+      responsive: true,
         maintainAspectRatio: false,      // key to stop the infinite growth
+        animation: false,
         plugins: { legend: { display: false }, tooltip: { enabled: true } },
         scales: { x: { display: false }, y: { display: false } },
       }
