@@ -1,0 +1,16 @@
+# First to start the project, run:
+
+cd "D:/Documents/Programming/Coding/Projects/Desktop Habit Tracker"
+docker compose up -d
+
+# Then confirm the containers are running:
+
+docker compose ps
+
+# Then run the project:
+
+python desktop.py
+
+# To stop the project, run:
+
+docker compose down
