@@ -8,9 +8,7 @@ import os
 db = SQLAlchemy()
 migrate = Migrate()
 
-# ✅ import init_scheduler from reminders.py
-from .reminders import init_scheduler
-
+from .reminders import init_scheduler  # ✅
 
 def create_app():
     load_dotenv()
@@ -20,7 +18,7 @@ def create_app():
 
     # init extensions
     db.init_app(app)
-    init_scheduler(app)  # ✅ Start reminder scheduler
+    init_scheduler(app)  # ✅ start scheduler (guarded against double-start)
     migrate.init_app(app, db)
 
     # register blueprints
