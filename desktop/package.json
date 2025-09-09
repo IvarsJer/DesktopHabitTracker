@@ -1,0 +1,14 @@
+{
+  "name": "habitflow-desktop",
+  "version": "0.1.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^30",
+    "electron-builder": "^24"
+  }
+}
