@@ -4,9 +4,12 @@ from flask_migrate import Migrate
 from dotenv import load_dotenv
 import os
 
-# extensions (initialized without app, then "init_app" later)
+# extensions
 db = SQLAlchemy()
 migrate = Migrate()
+
+# ✅ import init_scheduler from reminders.py
+from .reminders import init_scheduler
 
 
 def create_app():
@@ -17,6 +20,7 @@ def create_app():
 
     # init extensions
     db.init_app(app)
+    init_scheduler(app)  # ✅ Start reminder scheduler
     migrate.init_app(app, db)
 
     # register blueprints
